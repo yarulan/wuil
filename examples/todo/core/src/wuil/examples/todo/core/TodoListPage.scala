@@ -4,6 +4,7 @@ import wuil.View
 
 import scala.collection.mutable
 import htmldsl._
+import org.scalajs.dom.raw.HTMLLIElement
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -33,12 +34,18 @@ class TodoListPage(initialTodos: Seq[Todo]) extends View {
     input(cls := "new-todo", placeholder := "What needs to be done?", autofocus)
   }
 
-  private def todoView(todo: Todo) = {
+  private def todoView(todo: Todo): HTMLLIElement = {
     li {
+      val listItem = backend.getElementUnderConstruction.get
       div(cls := "view", {
         input(cls := "toggle", tpe := "checkbox", checked := todo.completed)
         label { text(todo.title) }
-        button(cls := "destroy")
+        val btn = button(cls := "destroy")
+        if (btn ne null) {
+          btn.onclick = (_) => {
+            todoList.removeChild(listItem)
+          }
+        }
       })
       input(cls := "edit", "value" := todo.title)
     }
