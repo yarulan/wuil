@@ -4,14 +4,14 @@ import java.io.File
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{ContentType, HttpEntity}
+import akka.http.scaladsl.model.{ContentType, ContentTypes, HttpEntity}
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
 import htmldsl.string.StringBackend
 import upickle.Js
-import wuil.examples.todo.core.Router
+import wuil.examples.todo.core.{Page, Router}
 
-object EntryPoint {
+object TodoServerEntryPoint {
   def main(args: Array[String]): Unit = {
     implicit val system = ActorSystem("DefaultActorSystem")
     implicit val materializer = ActorMaterializer()
@@ -29,11 +29,13 @@ object EntryPoint {
             getFromResourceDirectory("static")
           },
           path(Segments) { s =>
-            complete(router.route(s.mkString("/")).map{ view =>
+            complete(router.route(s.mkString("/")).map{ _ =>
               val backend = new StringBackend
+              val view = new Page
               view.backend = backend
               view.render()
-              backend.builder.toString()
+              val html = backend.builder.toString()
+              HttpEntity(ContentTypes.`text/html(UTF-8)`, html)
             })
           }
         )

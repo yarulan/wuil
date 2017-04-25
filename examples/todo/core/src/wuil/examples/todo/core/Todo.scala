@@ -1,3 +1,4 @@
 package wuil.examples.todo.core
 
-case class Todo(title: String)
+case class Todo(title: String, completed: Boolean) {
+}

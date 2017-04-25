@@ -28,6 +28,7 @@ lazy val web = defModule("web")
   .enablePlugins(ScalaJSPlugin)
   .settings(
     libraryDependencies ++= Seq(
+      "pro.ulan.html-dsl" %%% "dom" % "1.0-SNAPSHOT"
     ))
 
 lazy val wuil = defModule(".", "wuil")
