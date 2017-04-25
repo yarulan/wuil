@@ -1,14 +1,18 @@
 package wuil.examples.todo.core
 
-import upickle.default.{Reader, Writer}
+import org.scalajs.dom.ext.Ajax
+import upickle.Js
+import upickle.default._
+import scalajs.concurrent.JSExecutionContext.Implicits.queue
 
 import scala.concurrent.Future
 
-object Client extends autowire.Client[String, Reader, Writer] {
-  def write[Result: Writer](r: Result) = upickle.default.write(r)
-  def read[Result: Reader](p: String) = upickle.default.read[Result](p)
-
-  override def doCall(req: Request): Future[String] = {
-    ???
+object Client extends autowire.Client[Js.Value, Reader, Writer] with JsonSerializers {
+  override def doCall(req: Request): Future[Js.Value] = {
+    Ajax.post(
+      url = "/api/" + req.path.mkString("/"),
+      data = upickle.json.write(Js.Obj(req.args.toSeq: _*))
+    ).map(_.responseText)
+      .map(upickle.json.read)
   }
 }

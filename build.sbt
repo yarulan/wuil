@@ -19,6 +19,7 @@ lazy val server = defModule("server")
   .dependsOn(core)
   .settings(
     libraryDependencies ++= Seq(
+      "pro.ulan.html-dsl" %% "string" % "1.0-SNAPSHOT"
     )
   )
 

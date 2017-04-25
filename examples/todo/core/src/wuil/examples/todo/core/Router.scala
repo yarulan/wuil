@@ -1,11 +1,16 @@
 package wuil.examples.todo.core
-import wuil.View
+
 import autowire._
+import upickle.Js
+import upickle.default._
+import wuil.View
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class Router(api: Api)(implicit ctx: ExecutionContext) extends wuil.Router {
+class Router(api: Api, client: autowire.Client[Js.Value, Reader, Writer])
+  (implicit ctx: ExecutionContext)
+  extends wuil.Router {
   override def route(url: String): Future[View] = {
-    Client[Api].getTodos().call().map(todos => new Page(todos.toBuffer))
+    client[Api].getTodos().call().map(todos => new TodoListPage(todos.toBuffer))
   }
 }
