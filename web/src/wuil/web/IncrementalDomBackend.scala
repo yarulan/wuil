@@ -1,7 +1,7 @@
 package wuil.web
 
-import htmldsl.{Attr, Backend, NoAttr, NoValueAttr, ValuedAttr}
 import org.scalajs.dom.raw.{Element, Text}
+import htmldsl.{Attr, Backend, NoAttr, NoValueAttr, ValuedAttr}
 
 object IncrementalDomBackend extends Backend {
   import IncrementalDom._

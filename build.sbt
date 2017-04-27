@@ -19,7 +19,7 @@ lazy val server = defModule("server")
   .dependsOn(core)
   .settings(
     libraryDependencies ++= Seq(
-      "pro.ulan.html-dsl" %% "string" % "1.0-SNAPSHOT"
+      "pro.ulan.html-dsl" %% "object-backend" % "1.0-SNAPSHOT"
     )
   )
 
@@ -28,7 +28,7 @@ lazy val web = defModule("web")
   .enablePlugins(ScalaJSPlugin)
   .settings(
     libraryDependencies ++= Seq(
-      "pro.ulan.html-dsl" %%% "dom" % "1.0-SNAPSHOT"
+      "pro.ulan.html-dsl" %%% "dom-backend" % "1.0-SNAPSHOT"
     ))
 
 lazy val wuil = defModule(".", "wuil")
@@ -38,6 +38,7 @@ lazy val todoCore = defModule("examples/todo/core", "todoCore")
   .dependsOn(core)
   .enablePlugins(ScalaJSPlugin).
   settings(libraryDependencies ++= Seq(
+    "org.scala-js" %%% "scalajs-dom" % "0.9.1" % "provided",
     "com.lihaoyi" %%% "autowire" % "0.2.6",
     "com.lihaoyi" %%% "upickle" % "0.4.4"
   ))

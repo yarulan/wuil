@@ -1,6 +1,7 @@
 package wuil.web
 
-import org.scalajs.dom.raw.{Element, Node, Text}
+import org.scalajs.dom.Node
+import org.scalajs.dom.raw.{Element, Text}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSGlobal

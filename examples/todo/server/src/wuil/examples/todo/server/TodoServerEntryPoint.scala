@@ -1,13 +1,11 @@
 package wuil.examples.todo.server
 
-import java.io.File
-
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentType, ContentTypes, HttpEntity}
-import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
-import htmldsl.string.StringBackend
+import akka.stream.ActorMaterializer
+import htmldsl.backends.`object`.ObjectBackend
 import upickle.Js
 import wuil.examples.todo.core.{Page, Router}
 
@@ -30,11 +28,11 @@ object TodoServerEntryPoint {
           },
           path(Segments) { s =>
             complete(router.route(s.mkString("/")).map{ _ =>
-              val backend = new StringBackend
               val view = new Page
-              view.backend = backend
+              ObjectBackend.enable()
               view.render()
-              val html = backend.builder.toString()
+              import htmldsl.nodeToRenderable
+              val html = ObjectBackend.lastConstructedNode.get.toHtmlString
               HttpEntity(ContentTypes.`text/html(UTF-8)`, html)
             })
           }
